@@ -2,41 +2,79 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Calculator Design System - Modern Glassmorphism */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Background gradients */
+    --background: 220 25% 5%;
+    --background-secondary: 220 20% 8%;
+    --foreground: 210 40% 98%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    /* Calculator glass surface */
+    --glass: 220 25% 10%;
+    --glass-border: 220 30% 20%;
+    --glass-foreground: 210 40% 98%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    /* Display */
+    --display: 220 25% 8%;
+    --display-foreground: 210 40% 98%;
+    --display-secondary: 215 20% 65%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Buttons */
+    --button: 220 25% 15%;
+    --button-hover: 220 25% 20%;
+    --button-active: 220 25% 25%;
+    --button-foreground: 210 40% 98%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Operator buttons */
+    --operator: 38 100% 50%;
+    --operator-hover: 38 100% 55%;
+    --operator-active: 38 100% 45%;
+    --operator-foreground: 220 25% 5%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Equals button */
+    --equals: 38 100% 50%;
+    --equals-hover: 38 100% 55%;
+    --equals-active: 38 100% 45%;
+    --equals-foreground: 220 25% 5%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Clear button */
+    --clear: 215 20% 25%;
+    --clear-hover: 215 20% 30%;
+    --clear-active: 215 20% 35%;
+    --clear-foreground: 210 40% 98%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    /* Effects */
+    --glow: 38 100% 50%;
+    --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.3);
+    --shadow-button: 0 4px 12px rgba(0, 0, 0, 0.2);
+    --shadow-glow: 0 0 20px hsla(var(--glow), 0.3);
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    /* Animations */
+    --transition-smooth: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-spring: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
+
+    /* Glassmorphism gradients */
+    --gradient-glass: linear-gradient(145deg, 
+      hsla(220, 25%, 15%, 0.8), 
+      hsla(220, 25%, 10%, 0.9)
+    );
+    --gradient-background: linear-gradient(135deg,
+      hsl(220, 25%, 5%) 0%,
+      hsl(220, 20%, 8%) 50%,
+      hsl(220, 25%, 6%) 100%
+    );
+    --gradient-button: linear-gradient(145deg,
+      hsla(220, 25%, 18%, 0.9),
+      hsla(220, 25%, 12%, 0.9)
+    );
+    --gradient-operator: linear-gradient(145deg,
+      hsl(38, 100%, 52%),
+      hsl(38, 100%, 48%)
+    );
 
     --sidebar-background: 0 0% 98%;
 
@@ -100,6 +138,74 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    background: var(--gradient-background);
+    color: hsl(var(--foreground));
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    min-height: 100vh;
+  }
+
+  /* Calculator specific styles */
+  .calculator-glass {
+    background: var(--gradient-glass);
+    backdrop-filter: blur(20px);
+    border: 1px solid hsla(var(--glass-border), 0.2);
+    box-shadow: var(--shadow-glass);
+  }
+
+  .button-base {
+    background: var(--gradient-button);
+    border: 1px solid hsla(var(--glass-border), 0.1);
+    color: hsl(var(--button-foreground));
+    transition: var(--transition-smooth);
+    box-shadow: var(--shadow-button);
+  }
+
+  .button-base:hover {
+    background: hsl(var(--button-hover));
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  }
+
+  .button-base:active {
+    transform: translateY(0);
+    background: hsl(var(--button-active));
+  }
+
+  .button-operator {
+    background: var(--gradient-operator);
+    color: hsl(var(--operator-foreground));
+    box-shadow: var(--shadow-glow);
+  }
+
+  .button-operator:hover {
+    background: hsl(var(--operator-hover));
+    box-shadow: var(--shadow-glow), 0 6px 16px rgba(0, 0, 0, 0.3);
+  }
+
+  .button-equals {
+    background: var(--gradient-operator);
+    color: hsl(var(--equals-foreground));
+    box-shadow: var(--shadow-glow);
+    font-weight: 600;
+  }
+
+  .button-equals:hover {
+    background: hsl(var(--equals-hover));
+    box-shadow: var(--shadow-glow), 0 6px 16px rgba(0, 0, 0, 0.3);
+  }
+
+  .button-clear {
+    background: hsl(var(--clear));
+    color: hsl(var(--clear-foreground));
+  }
+
+  .button-clear:hover {
+    background: hsl(var(--clear-hover));
+  }
+
+  .display-glass {
+    background: hsl(var(--display));
+    border: 1px solid hsla(var(--glass-border), 0.1);
+    color: hsl(var(--display-foreground));
   }
 }
