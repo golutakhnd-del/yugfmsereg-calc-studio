@@ -125,6 +125,9 @@ const Calculator = () => {
       <div className="calculator-glass rounded-2xl p-6 w-full max-w-sm">
         {/* Header */}
         <div className="text-center mb-6">
+          <div className="text-sm font-medium text-hsl(var(--primary)) mb-1">
+            YUGFMSEREG
+          </div>
           <h1 className="text-lg font-semibold text-hsl(var(--foreground)) opacity-80">
             Calculator
           </h1>
