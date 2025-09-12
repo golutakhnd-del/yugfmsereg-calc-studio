@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
+import crystalBg from '@/assets/crystal-bg.jpg';
+import calculator3d from '@/assets/calculator-3d.png';
+import geometricShapes from '@/assets/geometric-shapes.jpg';
 
 const Calculator = () => {
   const [display, setDisplay] = useState('0');
@@ -127,11 +130,16 @@ const Calculator = () => {
         <div className="shape-1"></div>
         <div className="shape-2"></div>
         <div className="shape-3"></div>
+        <div className="shape-4"></div>
+        <div className="shape-5"></div>
       </div>
       
-      <div className="calculator-glass rounded-2xl p-6 w-full max-w-sm premium-container">
+      <div className="calculator-glass rounded-2xl p-6 w-full max-w-sm premium-container relative">
+        {/* 3D Calculator Icon Background */}
+        <div className="calculator-3d-bg"></div>
+        
         {/* Header */}
-        <div className="text-center mb-6">
+        <div className="text-center mb-6 relative z-10">
           <div className="text-sm font-medium text-hsl(var(--primary)) mb-1">
             YUGFMSEREG
           </div>
