@@ -142,32 +142,212 @@
     color: hsl(var(--foreground));
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* Premium 3D Background */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+      radial-gradient(circle at 20% 30%, hsla(280, 100%, 50%, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, hsla(200, 100%, 50%, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 50% 50%, hsla(38, 100%, 50%, 0.05) 0%, transparent 70%);
+    z-index: -2;
+    animation: float 6s ease-in-out infinite alternate;
+  }
+
+  /* Animated 3D Geometric Shapes */
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+      radial-gradient(circle at 15% 15%, hsla(280, 100%, 70%, 0.05) 2px, transparent 2px),
+      radial-gradient(circle at 85% 85%, hsla(200, 100%, 70%, 0.05) 2px, transparent 2px),
+      radial-gradient(circle at 50% 20%, hsla(38, 100%, 70%, 0.03) 1px, transparent 1px);
+    background-size: 60px 60px, 80px 80px, 40px 40px;
+    z-index: -1;
+    animation: drift 12s linear infinite;
+  }
+
+  /* Premium Glass Container Enhancement */
+  .premium-container {
+    position: relative;
+    backdrop-filter: blur(30px);
+    background: linear-gradient(145deg, 
+      hsla(220, 25%, 15%, 0.9), 
+      hsla(220, 25%, 10%, 0.95)
+    );
+    border: 2px solid;
+    border-image: linear-gradient(145deg, 
+      hsla(280, 100%, 70%, 0.3), 
+      hsla(38, 100%, 50%, 0.3),
+      hsla(200, 100%, 70%, 0.3)
+    ) 1;
+    box-shadow: 
+      0 20px 60px hsla(0, 0%, 0%, 0.4),
+      0 0 40px hsla(280, 100%, 50%, 0.1),
+      inset 0 1px 0 hsla(255, 255%, 255%, 0.1);
+  }
+
+  /* 3D Floating Elements */
+  .floating-shapes {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .shape-1, .shape-2, .shape-3 {
+    position: absolute;
+    border-radius: 50%;
+    background: linear-gradient(145deg, 
+      hsla(280, 100%, 70%, 0.1), 
+      hsla(280, 100%, 50%, 0.05)
+    );
+    filter: blur(1px);
+  }
+
+  .shape-1 {
+    width: 120px;
+    height: 120px;
+    top: 10%;
+    left: 10%;
+    animation: float-1 8s ease-in-out infinite;
+  }
+
+  .shape-2 {
+    width: 80px;
+    height: 80px;
+    top: 60%;
+    right: 15%;
+    background: linear-gradient(145deg, 
+      hsla(200, 100%, 70%, 0.1), 
+      hsla(200, 100%, 50%, 0.05)
+    );
+    animation: float-2 10s ease-in-out infinite;
+  }
+
+  .shape-3 {
+    width: 100px;
+    height: 100px;
+    bottom: 20%;
+    left: 20%;
+    background: linear-gradient(145deg, 
+      hsla(38, 100%, 70%, 0.1), 
+      hsla(38, 100%, 50%, 0.05)
+    );
+    animation: float-3 12s ease-in-out infinite;
+  }
+
+  /* Premium Animations */
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(5deg); }
+  }
+
+  @keyframes drift {
+    0% { transform: translateX(0) translateY(0); }
+    100% { transform: translateX(-60px) translateY(-60px); }
+  }
+
+  @keyframes float-1 {
+    0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+    25% { transform: translate(20px, -15px) rotate(90deg) scale(1.1); }
+    50% { transform: translate(-10px, -30px) rotate(180deg) scale(0.9); }
+    75% { transform: translate(-25px, -10px) rotate(270deg) scale(1.05); }
+  }
+
+  @keyframes float-2 {
+    0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+    33% { transform: translate(-15px, 20px) rotate(120deg) scale(1.2); }
+    66% { transform: translate(25px, -15px) rotate(240deg) scale(0.8); }
+  }
+
+  @keyframes float-3 {
+    0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+    40% { transform: translate(15px, -25px) rotate(144deg) scale(1.15); }
+    80% { transform: translate(-20px, 10px) rotate(288deg) scale(0.95); }
   }
 
   /* Calculator specific styles */
   .calculator-glass {
     background: var(--gradient-glass);
-    backdrop-filter: blur(20px);
-    border: 1px solid hsla(var(--glass-border), 0.2);
-    box-shadow: var(--shadow-glass);
+    backdrop-filter: blur(30px);
+    border: 2px solid;
+    border-image: linear-gradient(145deg, 
+      hsla(280, 100%, 70%, 0.3), 
+      hsla(38, 100%, 50%, 0.3),
+      hsla(200, 100%, 70%, 0.3)
+    ) 1;
+    box-shadow: 
+      0 20px 60px hsla(0, 0%, 0%, 0.4),
+      0 0 40px hsla(280, 100%, 50%, 0.1),
+      inset 0 1px 0 hsla(255, 255%, 255%, 0.1);
+    position: relative;
+    transform: perspective(1000px) rotateX(5deg);
+    transition: var(--transition-spring);
+  }
+
+  .calculator-glass:hover {
+    transform: perspective(1000px) rotateX(0deg) translateY(-5px);
+    box-shadow: 
+      0 25px 80px hsla(0, 0%, 0%, 0.5),
+      0 0 60px hsla(280, 100%, 50%, 0.15),
+      inset 0 1px 0 hsla(255, 255%, 255%, 0.15);
   }
 
   .button-base {
     background: var(--gradient-button);
     border: 1px solid hsla(var(--glass-border), 0.1);
     color: hsl(var(--button-foreground));
-    transition: var(--transition-smooth);
+    transition: var(--transition-spring);
     box-shadow: var(--shadow-button);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .button-base::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+      transparent, 
+      hsla(255, 255%, 255%, 0.1), 
+      transparent
+    );
+    transition: left 0.5s ease;
+  }
+
+  .button-base:hover::before {
+    left: 100%;
   }
 
   .button-base:hover {
     background: hsl(var(--button-hover));
-    transform: translateY(-1px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 
+      0 8px 25px rgba(0, 0, 0, 0.3),
+      0 0 20px hsla(280, 100%, 50%, 0.1);
   }
 
   .button-base:active {
-    transform: translateY(0);
+    transform: translateY(0) scale(0.98);
     background: hsl(var(--button-active));
   }
 

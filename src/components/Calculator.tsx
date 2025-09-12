@@ -121,8 +121,15 @@ const Calculator = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen p-4">
-      <div className="calculator-glass rounded-2xl p-6 w-full max-w-sm">
+    <div className="flex items-center justify-center min-h-screen p-4 relative">
+      {/* Premium 3D Floating Shapes */}
+      <div className="floating-shapes">
+        <div className="shape-1"></div>
+        <div className="shape-2"></div>
+        <div className="shape-3"></div>
+      </div>
+      
+      <div className="calculator-glass rounded-2xl p-6 w-full max-w-sm premium-container">
         {/* Header */}
         <div className="text-center mb-6">
           <div className="text-sm font-medium text-hsl(var(--primary)) mb-1">
