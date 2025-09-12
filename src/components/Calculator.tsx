@@ -125,13 +125,15 @@ const Calculator = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen p-4 relative">
-      {/* Premium 3D Floating Shapes */}
+      {/* Ultra Premium 3D Floating Shapes */}
       <div className="floating-shapes">
         <div className="shape-1"></div>
         <div className="shape-2"></div>
         <div className="shape-3"></div>
         <div className="shape-4"></div>
         <div className="shape-5"></div>
+        <div className="shape-6"></div>
+        <div className="shape-7"></div>
       </div>
       
       <div className="calculator-glass rounded-2xl p-6 w-full max-w-sm premium-container relative">

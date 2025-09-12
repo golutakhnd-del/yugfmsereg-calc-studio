@@ -138,34 +138,40 @@
   }
 
   body {
-    background: var(--gradient-background);
+    background: 
+      linear-gradient(135deg, #0a0a0a 0%, #1a0f2e 25%, #2d1b3d 50%, #1a0f2e 75%, #0a0a0a 100%),
+      radial-gradient(circle at 30% 20%, rgba(138, 43, 226, 0.3) 0%, transparent 50%),
+      radial-gradient(circle at 70% 80%, rgba(255, 215, 0, 0.2) 0%, transparent 50%);
     color: hsl(var(--foreground));
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     min-height: 100vh;
     position: relative;
     overflow-x: hidden;
+    animation: background-shift 8s ease-in-out infinite alternate;
   }
 
-  /* Premium 3D Background with Crystal Effects */
+  @keyframes background-shift {
+    0% { filter: hue-rotate(0deg) brightness(1); }
+    50% { filter: hue-rotate(30deg) brightness(1.1); }
+    100% { filter: hue-rotate(0deg) brightness(1); }
+  }
+
+  /* Ultra Premium 3D Background */
   body::before {
     content: '';
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background: 
-      url('/src/assets/crystal-bg.jpg') center/cover no-repeat,
-      radial-gradient(circle at 20% 30%, hsla(280, 100%, 50%, 0.15) 0%, transparent 50%),
-      radial-gradient(circle at 80% 70%, hsla(200, 100%, 50%, 0.15) 0%, transparent 50%),
-      radial-gradient(circle at 50% 50%, hsla(38, 100%, 50%, 0.08) 0%, transparent 70%);
-    z-index: -3;
-    animation: crystal-rotate 20s linear infinite;
-    opacity: 0.3;
-    filter: blur(1px);
+    width: 120%;
+    height: 120%;
+    background: url('/src/assets/premium-bg.jpg') center/cover no-repeat;
+    z-index: -4;
+    animation: mega-rotate 25s linear infinite;
+    opacity: 0.6;
+    transform: scale(1.2);
   }
 
-  /* Enhanced 3D Geometric Patterns */
+  /* Holographic Particle System */
   body::after {
     content: '';
     position: fixed;
@@ -174,48 +180,66 @@
     width: 100%;
     height: 100%;
     background-image:
-      url('/src/assets/geometric-shapes.jpg'),
-      radial-gradient(circle at 15% 15%, hsla(280, 100%, 70%, 0.08) 3px, transparent 3px),
-      radial-gradient(circle at 85% 85%, hsla(200, 100%, 70%, 0.08) 3px, transparent 3px),
-      radial-gradient(circle at 50% 20%, hsla(38, 100%, 70%, 0.05) 2px, transparent 2px);
-    background-size: cover, 80px 80px, 120px 120px, 60px 60px;
-    background-blend-mode: overlay;
-    z-index: -2;
-    opacity: 0.4;
-    animation: geometric-drift 15s linear infinite;
+      radial-gradient(circle at 10% 10%, rgba(255, 0, 255, 0.4) 1px, transparent 1px),
+      radial-gradient(circle at 90% 20%, rgba(0, 255, 255, 0.4) 1px, transparent 1px),
+      radial-gradient(circle at 30% 70%, rgba(255, 255, 0, 0.4) 1px, transparent 1px),
+      radial-gradient(circle at 70% 90%, rgba(255, 100, 0, 0.4) 1px, transparent 1px),
+      radial-gradient(circle at 50% 50%, rgba(100, 255, 100, 0.3) 2px, transparent 2px);
+    background-size: 100px 100px, 120px 120px, 80px 80px, 150px 150px, 200px 200px;
+    z-index: -3;
+    animation: particles-dance 12s linear infinite;
+    filter: blur(0.5px);
   }
 
-  /* 3D Calculator Icon Background */
-  .calculator-3d-bg {
-    position: absolute;
-    top: -50px;
-    right: -30px;
-    width: 100px;
-    height: 100px;
-    background: url('/src/assets/calculator-3d.png') center/contain no-repeat;
-    opacity: 0.1;
-    animation: icon-float 8s ease-in-out infinite;
-    z-index: 0;
+  @keyframes particles-dance {
+    0% { transform: translate(0, 0) rotate(0deg); opacity: 0.8; }
+    25% { transform: translate(-20px, -30px) rotate(90deg); opacity: 1; }
+    50% { transform: translate(30px, -20px) rotate(180deg); opacity: 0.6; }
+    75% { transform: translate(-10px, 40px) rotate(270deg); opacity: 0.9; }
+    100% { transform: translate(0, 0) rotate(360deg); opacity: 0.8; }
   }
 
-  /* Premium Glass Container Enhancement */
+  @keyframes mega-rotate {
+    0% { transform: scale(1.2) rotate(0deg); }
+    100% { transform: scale(1.2) rotate(360deg); }
+  }
+
+  /* Ultra Premium Glass Container */
   .premium-container {
     position: relative;
-    backdrop-filter: blur(30px);
+    backdrop-filter: blur(40px) saturate(180%);
     background: linear-gradient(145deg, 
-      hsla(220, 25%, 15%, 0.9), 
-      hsla(220, 25%, 10%, 0.95)
+      rgba(255, 255, 255, 0.25), 
+      rgba(255, 255, 255, 0.1)
     );
-    border: 2px solid;
+    border: 3px solid;
     border-image: linear-gradient(145deg, 
-      hsla(280, 100%, 70%, 0.3), 
-      hsla(38, 100%, 50%, 0.3),
-      hsla(200, 100%, 70%, 0.3)
+      rgba(255, 0, 255, 0.8), 
+      rgba(0, 255, 255, 0.8),
+      rgba(255, 255, 0, 0.8),
+      rgba(255, 100, 0, 0.8)
     ) 1;
     box-shadow: 
-      0 20px 60px hsla(0, 0%, 0%, 0.4),
-      0 0 40px hsla(280, 100%, 50%, 0.1),
-      inset 0 1px 0 hsla(255, 255%, 255%, 0.1);
+      0 30px 100px rgba(0, 0, 0, 0.6),
+      0 0 80px rgba(255, 0, 255, 0.3),
+      inset 0 2px 4px rgba(255, 255, 255, 0.3),
+      0 0 0 1px rgba(255, 255, 255, 0.2);
+    animation: container-glow 4s ease-in-out infinite alternate;
+  }
+
+  @keyframes container-glow {
+    0% { 
+      box-shadow: 
+        0 30px 100px rgba(0, 0, 0, 0.6),
+        0 0 80px rgba(255, 0, 255, 0.3),
+        inset 0 2px 4px rgba(255, 255, 255, 0.3);
+    }
+    100% { 
+      box-shadow: 
+        0 35px 120px rgba(0, 0, 0, 0.8),
+        0 0 120px rgba(0, 255, 255, 0.5),
+        inset 0 3px 6px rgba(255, 255, 255, 0.4);
+    }
   }
 
   /* 3D Floating Elements */
@@ -229,85 +253,117 @@
     z-index: -1;
   }
 
-  .shape-1, .shape-2, .shape-3, .shape-4, .shape-5 {
+  /* Massive Premium Floating Elements */
+  .shape-1, .shape-2, .shape-3, .shape-4, .shape-5, .shape-6, .shape-7 {
     position: absolute;
-    border-radius: 50%;
     background: linear-gradient(145deg, 
-      hsla(280, 100%, 70%, 0.12), 
-      hsla(280, 100%, 50%, 0.06)
+      rgba(255, 0, 255, 0.3), 
+      rgba(0, 255, 255, 0.2),
+      rgba(255, 255, 0, 0.25)
     );
-    filter: blur(1px);
+    filter: blur(2px);
     box-shadow: 
-      0 0 30px hsla(280, 100%, 50%, 0.2),
-      inset 0 0 20px hsla(255, 255%, 255%, 0.1);
+      0 0 60px rgba(255, 0, 255, 0.4),
+      inset 0 0 40px rgba(255, 255, 255, 0.2);
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .shape-1 {
-    width: 150px;
-    height: 150px;
-    top: 5%;
-    left: 8%;
-    animation: float-1 10s ease-in-out infinite;
+    width: 200px;
+    height: 200px;
+    top: 2%;
+    left: 5%;
+    border-radius: 50%;
+    animation: mega-float-1 12s ease-in-out infinite;
     background: linear-gradient(145deg, 
-      hsla(280, 100%, 70%, 0.15), 
-      hsla(280, 100%, 50%, 0.08)
+      rgba(255, 0, 255, 0.4), 
+      rgba(138, 43, 226, 0.3)
     );
   }
 
   .shape-2 {
-    width: 100px;
-    height: 100px;
-    top: 55%;
-    right: 12%;
+    width: 150px;
+    height: 150px;
+    top: 50%;
+    right: 8%;
+    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
     background: linear-gradient(145deg, 
-      hsla(200, 100%, 70%, 0.15), 
-      hsla(200, 100%, 50%, 0.08)
+      rgba(0, 255, 255, 0.4), 
+      rgba(0, 191, 255, 0.3)
     );
-    animation: float-2 12s ease-in-out infinite;
+    animation: mega-float-2 15s ease-in-out infinite;
     box-shadow: 
-      0 0 35px hsla(200, 100%, 50%, 0.25),
-      inset 0 0 25px hsla(255, 255%, 255%, 0.12);
+      0 0 80px rgba(0, 255, 255, 0.5),
+      inset 0 0 50px rgba(255, 255, 255, 0.25);
   }
 
   .shape-3 {
-    width: 120px;
-    height: 120px;
-    bottom: 15%;
-    left: 15%;
+    width: 180px;
+    height: 180px;
+    bottom: 10%;
+    left: 12%;
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
     background: linear-gradient(145deg, 
-      hsla(38, 100%, 70%, 0.15), 
-      hsla(38, 100%, 50%, 0.08)
+      rgba(255, 255, 0, 0.4), 
+      rgba(255, 193, 7, 0.3)
     );
-    animation: float-3 14s ease-in-out infinite;
+    animation: mega-float-3 18s ease-in-out infinite;
     box-shadow: 
-      0 0 40px hsla(38, 100%, 50%, 0.3),
-      inset 0 0 30px hsla(255, 255%, 255%, 0.15);
+      0 0 100px rgba(255, 255, 0, 0.6),
+      inset 0 0 60px rgba(255, 255, 255, 0.3);
   }
 
   .shape-4 {
-    width: 80px;
-    height: 80px;
-    top: 25%;
-    right: 25%;
+    width: 120px;
+    height: 120px;
+    top: 20%;
+    right: 20%;
+    border-radius: 20px;
     background: linear-gradient(145deg, 
-      hsla(320, 100%, 70%, 0.12), 
-      hsla(320, 100%, 50%, 0.06)
+      rgba(255, 100, 0, 0.35), 
+      rgba(255, 69, 0, 0.25)
     );
-    animation: float-4 9s ease-in-out infinite;
-    border-radius: 30%;
+    animation: mega-float-4 11s ease-in-out infinite;
+    transform: rotate(45deg);
   }
 
   .shape-5 {
-    width: 60px;
-    height: 60px;
-    bottom: 40%;
-    right: 35%;
+    width: 80px;
+    height: 80px;
+    bottom: 35%;
+    right: 30%;
+    border-radius: 50% 20% 50% 20%;
     background: linear-gradient(145deg, 
-      hsla(180, 100%, 70%, 0.12), 
-      hsla(180, 100%, 50%, 0.06)
+      rgba(50, 255, 50, 0.35), 
+      rgba(0, 255, 127, 0.25)
     );
-    animation: float-5 11s ease-in-out infinite;
-    border-radius: 20%;
+    animation: mega-float-5 13s ease-in-out infinite;
+  }
+
+  .shape-6 {
+    width: 160px;
+    height: 80px;
+    top: 70%;
+    left: 70%;
+    border-radius: 50px;
+    background: linear-gradient(145deg, 
+      rgba(255, 20, 147, 0.35), 
+      rgba(199, 21, 133, 0.25)
+    );
+    animation: mega-float-6 16s ease-in-out infinite;
+  }
+
+  .shape-7 {
+    width: 100px;
+    height: 100px;
+    top: 40%;
+    left: 80%;
+    border-radius: 50%;
+    background: linear-gradient(145deg, 
+      rgba(138, 43, 226, 0.35), 
+      rgba(75, 0, 130, 0.25)
+    );
+    animation: mega-float-7 14s ease-in-out infinite;
   }
 
   /* Premium 3D Animations */
@@ -461,5 +517,52 @@
     background: hsl(var(--display));
     border: 1px solid hsla(var(--glass-border), 0.1);
     color: hsl(var(--display-foreground));
+  @keyframes mega-float-1 {
+    0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+    16% { transform: translate(40px, -30px) rotate(60deg) scale(1.2); }
+    33% { transform: translate(-20px, -50px) rotate(120deg) scale(0.8); }
+    50% { transform: translate(-45px, -25px) rotate(180deg) scale(1.15); }
+    66% { transform: translate(25px, -40px) rotate(240deg) scale(0.9); }
+    83% { transform: translate(30px, -15px) rotate(300deg) scale(1.05); }
+  }
+
+  @keyframes mega-float-2 {
+    0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+    20% { transform: translate(-35px, 40px) rotate(72deg) scale(1.3); }
+    40% { transform: translate(50px, -30px) rotate(144deg) scale(0.7); }
+    60% { transform: translate(-40px, -35px) rotate(216deg) scale(1.2); }
+    80% { transform: translate(30px, 25px) rotate(288deg) scale(0.85); }
+  }
+
+  @keyframes mega-float-3 {
+    0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+    25% { transform: translate(30px, -45px) rotate(90deg) scale(1.25); }
+    50% { transform: translate(-40px, 20px) rotate(180deg) scale(0.75); }
+    75% { transform: translate(35px, -30px) rotate(270deg) scale(1.1); }
+  }
+
+  @keyframes mega-float-4 {
+    0%, 100% { transform: translate(0, 0) rotate(45deg) scale(1); }
+    30% { transform: translate(-25px, 35px) rotate(135deg) scale(1.15); }
+    60% { transform: translate(40px, -25px) rotate(225deg) scale(0.9); }
+    90% { transform: translate(-15px, -30px) rotate(315deg) scale(1.05); }
+  }
+
+  @keyframes mega-float-5 {
+    0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+    40% { transform: translate(20px, -35px) rotate(144deg) scale(1.2); }
+    80% { transform: translate(-30px, 15px) rotate(288deg) scale(0.85); }
+  }
+
+  @keyframes mega-float-6 {
+    0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+    33% { transform: translate(-30px, 25px) rotate(120deg) scale(1.1); }
+    66% { transform: translate(35px, -20px) rotate(240deg) scale(0.95); }
+  }
+
+  @keyframes mega-float-7 {
+    0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+    35% { transform: translate(-25px, 30px) rotate(126deg) scale(1.15); }
+    70% { transform: translate(30px, -25px) rotate(252deg) scale(0.9); }
   }
 }
