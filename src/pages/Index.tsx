@@ -1,7 +1,7 @@
-import Calculator from '@/components/Calculator';
+import MainApp from '@/components/MainApp';
 
 const Index = () => {
-  return <Calculator />;
+  return <MainApp />;
 };
 
 export default Index;

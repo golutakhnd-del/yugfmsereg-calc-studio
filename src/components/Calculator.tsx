@@ -101,6 +101,92 @@ const Calculator = () => {
     setWaitingForNewOperand(true);
   };
 
+  const power = () => {
+    const num = parseFloat(display);
+    const exponent = parseFloat(prompt("Enter exponent:") || "2");
+    const result = Math.pow(num, exponent).toString();
+    addToHistory(`${display}^${exponent}`, result);
+    setDisplay(result);
+    setWaitingForNewOperand(true);
+  };
+
+  const sin = () => {
+    const num = parseFloat(display);
+    const result = Math.sin(num * Math.PI / 180).toString();
+    addToHistory(`sin(${display}°)`, result);
+    setDisplay(result);
+    setWaitingForNewOperand(true);
+  };
+
+  const cos = () => {
+    const num = parseFloat(display);
+    const result = Math.cos(num * Math.PI / 180).toString();
+    addToHistory(`cos(${display}°)`, result);
+    setDisplay(result);
+    setWaitingForNewOperand(true);
+  };
+
+  const tan = () => {
+    const num = parseFloat(display);
+    const result = Math.tan(num * Math.PI / 180).toString();
+    addToHistory(`tan(${display}°)`, result);
+    setDisplay(result);
+    setWaitingForNewOperand(true);
+  };
+
+  const log = () => {
+    const num = parseFloat(display);
+    if (num <= 0) {
+      setDisplay('Error');
+      return;
+    }
+    const result = Math.log10(num).toString();
+    addToHistory(`log(${display})`, result);
+    setDisplay(result);
+    setWaitingForNewOperand(true);
+  };
+
+  const ln = () => {
+    const num = parseFloat(display);
+    if (num <= 0) {
+      setDisplay('Error');
+      return;
+    }
+    const result = Math.log(num).toString();
+    addToHistory(`ln(${display})`, result);
+    setDisplay(result);
+    setWaitingForNewOperand(true);
+  };
+
+  const factorial = () => {
+    const num = parseInt(display);
+    if (num < 0 || num > 170) {
+      setDisplay('Error');
+      return;
+    }
+    let result = 1;
+    for (let i = 2; i <= num; i++) {
+      result *= i;
+    }
+    addToHistory(`${display}!`, result.toString());
+    setDisplay(result.toString());
+    setWaitingForNewOperand(true);
+  };
+
+  const pi = () => {
+    const result = Math.PI.toString();
+    addToHistory('π', result);
+    setDisplay(result);
+    setWaitingForNewOperand(true);
+  };
+
+  const e = () => {
+    const result = Math.E.toString();
+    addToHistory('e', result);
+    setDisplay(result);
+    setWaitingForNewOperand(true);
+  };
+
   const reciprocal = () => {
     const num = parseFloat(display);
     if (num === 0) {
