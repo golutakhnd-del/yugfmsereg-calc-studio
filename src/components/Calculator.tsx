@@ -1,11 +1,43 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Moon, Sun, Copy, History, RotateCcw } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+import CalculatorHistory from './CalculatorHistory';
+import CalculatorMemory from './CalculatorMemory';
 
 const Calculator = () => {
   const [display, setDisplay] = useState('0');
   const [previousValue, setPreviousValue] = useState<string | null>(null);
   const [operation, setOperation] = useState<string | null>(null);
   const [waitingForNewOperand, setWaitingForNewOperand] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
+  const [showHistory, setShowHistory] = useState(false);
+  const [history, setHistory] = useState<Array<{
+    calculation: string;
+    result: string;
+    timestamp: Date;
+  }>>([]);
+  const [memory, setMemory] = useState(0);
+  const { toast } = useToast();
+
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [darkMode]);
+
+  const addToHistory = (calculation: string, result: string) => {
+    const newEntry = {
+      calculation,
+      result,
+      timestamp: new Date()
+    };
+    setHistory(prev => [newEntry, ...prev.slice(0, 49)]); // Keep last 50 entries
+  };
 
   const inputNumber = (num: string) => {
     if (waitingForNewOperand) {
@@ -32,6 +64,86 @@ const Calculator = () => {
     setWaitingForNewOperand(false);
   };
 
+  const clearAll = () => {
+    clear();
+    setMemory(0);
+    setHistory([]);
+    toast({
+      title: "सफाई हो गई",
+      description: "सभी डेटा साफ कर दिया गया है"
+    });
+  };
+
+  const squareRoot = () => {
+    const num = parseFloat(display);
+    if (num < 0) {
+      setDisplay('Error');
+      return;
+    }
+    const result = Math.sqrt(num).toString();
+    addToHistory(`√${display}`, result);
+    setDisplay(result);
+    setWaitingForNewOperand(true);
+  };
+
+  const percentage = () => {
+    const result = (parseFloat(display) / 100).toString();
+    addToHistory(`${display}%`, result);
+    setDisplay(result);
+    setWaitingForNewOperand(true);
+  };
+
+  const square = () => {
+    const num = parseFloat(display);
+    const result = (num * num).toString();
+    addToHistory(`${display}²`, result);
+    setDisplay(result);
+    setWaitingForNewOperand(true);
+  };
+
+  const reciprocal = () => {
+    const num = parseFloat(display);
+    if (num === 0) {
+      setDisplay('Error');
+      return;
+    }
+    const result = (1 / num).toString();
+    addToHistory(`1/${display}`, result);
+    setDisplay(result);
+    setWaitingForNewOperand(true);
+  };
+
+  const memoryAdd = () => {
+    setMemory(memory + parseFloat(display));
+    toast({
+      title: "मेमोरी में जोड़ा गया",
+      description: `${display} मेमोरी में जोड़ दिया गया`
+    });
+    setWaitingForNewOperand(true);
+  };
+
+  const memorySubtract = () => {
+    setMemory(memory - parseFloat(display));
+    toast({
+      title: "मेमोरी से घटाया गया",
+      description: `${display} मेमोरी से घटा दिया गया`
+    });
+    setWaitingForNewOperand(true);
+  };
+
+  const memoryRecall = () => {
+    setDisplay(memory.toString());
+    setWaitingForNewOperand(true);
+  };
+
+  const memoryClear = () => {
+    setMemory(0);
+    toast({
+      title: "मेमोरी साफ",
+      description: "मेमोरी साफ कर दी गई"
+    });
+  };
+
   const performOperation = (nextOperation: string) => {
     const inputValue = parseFloat(display);
 
@@ -53,13 +165,23 @@ const Calculator = () => {
           result = prevValue * inputValue;
           break;
         case '÷':
-          result = inputValue !== 0 ? prevValue / inputValue : 0;
+          if (inputValue === 0) {
+            setDisplay('Error');
+            return;
+          }
+          result = prevValue / inputValue;
           break;
         default:
           return;
       }
 
       const resultString = result.toString();
+      const calculation = `${currentValue} ${operation} ${display}`;
+      
+      if (nextOperation === '=') {
+        addToHistory(calculation, resultString);
+      }
+      
       setDisplay(resultString);
       setPreviousValue(resultString);
     }
@@ -74,6 +196,22 @@ const Calculator = () => {
       setOperation(null);
       setPreviousValue(null);
       setWaitingForNewOperand(true);
+    }
+  };
+
+  const copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(display);
+      toast({
+        title: "कॉपी हो गया",
+        description: "परिणाम क्लिपबोर्ड में कॉपी कर दिया गया"
+      });
+    } catch (err) {
+      toast({
+        title: "त्रुटि",
+        description: "कॉपी करने में त्रुटि हुई",
+        variant: "destructive"
+      });
     }
   };
 
@@ -101,6 +239,10 @@ const Calculator = () => {
       } else {
         setDisplay('0');
       }
+    } else if (key === 's' || key === 'S') {
+      squareRoot();
+    } else if (key === '%') {
+      percentage();
     }
   };
 
@@ -110,6 +252,7 @@ const Calculator = () => {
   }, [display, operation, previousValue, waitingForNewOperand]);
 
   const formatDisplay = (value: string) => {
+    if (value === 'Error') return value;
     const num = parseFloat(value);
     if (value.length > 12) {
       if (num >= 1e12 || (num <= 1e-6 && num > 0)) {
@@ -129,32 +272,162 @@ const Calculator = () => {
         <div className="shape-3"></div>
       </div>
       
-      <div className="calculator-glass rounded-2xl p-6 w-full max-w-sm premium-container">
-        {/* Header */}
-        <div className="text-center mb-6">
-          <div className="text-sm font-medium text-hsl(var(--primary)) mb-1">
-            YUGFMSEREG
+      <div className="calculator-glass rounded-2xl p-6 w-full max-w-md premium-container relative">
+        {/* Header with controls */}
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <div className="text-sm font-medium text-primary mb-1">
+              YUGFMSEREG
+            </div>
+            <h1 className="text-lg font-semibold text-foreground opacity-80">
+              Smart Calculator
+            </h1>
           </div>
-          <h1 className="text-lg font-semibold text-hsl(var(--foreground)) opacity-80">
-            Calculator
-          </h1>
+          <div className="flex gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setDarkMode(!darkMode)}
+              className="h-8 w-8"
+            >
+              {darkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setShowHistory(!showHistory)}
+              className="h-8 w-8"
+            >
+              <History className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={clearAll}
+              className="h-8 w-8"
+            >
+              <RotateCcw className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
+
+        {/* Memory indicator */}
+        {memory !== 0 && (
+          <div className="mb-4">
+            <Badge variant="secondary" className="text-xs">
+              Memory: {memory}
+            </Badge>
+          </div>
+        )}
 
         {/* Display */}
-        <div className="display-glass rounded-xl p-6 mb-6">
+        <Card className="display-glass rounded-xl p-6 mb-6">
           <div className="text-right">
-            <div className="text-3xl font-light text-hsl(var(--display-foreground)) break-all">
+            <div className="flex items-center justify-between mb-2">
+              <div className="text-xs text-muted-foreground">
+                {operation && previousValue && `${previousValue} ${operation}`}
+              </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={copyToClipboard}
+                className="h-6 w-6"
+              >
+                <Copy className="h-3 w-3" />
+              </Button>
+            </div>
+            <div className="text-3xl font-light text-foreground break-all">
               {formatDisplay(display)}
             </div>
-            {operation && previousValue && (
-              <div className="text-sm text-hsl(var(--display-secondary)) mt-1">
-                {previousValue} {operation}
-              </div>
-            )}
           </div>
+        </Card>
+
+        {/* History Panel */}
+        {showHistory && (
+          <CalculatorHistory 
+            history={history} 
+            onClose={() => setShowHistory(false)}
+            onSelectResult={(result) => {
+              setDisplay(result);
+              setWaitingForNewOperand(true);
+              setShowHistory(false);
+            }}
+          />
+        )}
+
+        {/* Memory Functions Row */}
+        <div className="grid grid-cols-4 gap-2 mb-3">
+          <Button
+            variant="outline"
+            size="sm"
+            className="button-base rounded-lg h-10 text-sm"
+            onClick={memoryClear}
+          >
+            MC
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            className="button-base rounded-lg h-10 text-sm"
+            onClick={memoryRecall}
+          >
+            MR
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            className="button-base rounded-lg h-10 text-sm"
+            onClick={memoryAdd}
+          >
+            M+
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            className="button-base rounded-lg h-10 text-sm"
+            onClick={memorySubtract}
+          >
+            M-
+          </Button>
         </div>
 
-        {/* Buttons */}
+        {/* Scientific Functions Row */}
+        <div className="grid grid-cols-4 gap-3 mb-3">
+          <Button
+            variant="outline"
+            size="lg"
+            className="button-base rounded-xl h-12 text-sm"
+            onClick={squareRoot}
+          >
+            √
+          </Button>
+          <Button
+            variant="outline"
+            size="lg"
+            className="button-base rounded-xl h-12 text-sm"
+            onClick={square}
+          >
+            x²
+          </Button>
+          <Button
+            variant="outline"
+            size="lg"
+            className="button-base rounded-xl h-12 text-sm"
+            onClick={reciprocal}
+          >
+            1/x
+          </Button>
+          <Button
+            variant="outline"
+            size="lg"
+            className="button-operator rounded-xl h-12 text-lg font-medium"
+            onClick={() => performOperation('÷')}
+          >
+            ÷
+          </Button>
+        </div>
+
+        {/* Main Calculator Buttons */}
         <div className="grid grid-cols-4 gap-3">
           {/* Row 1 */}
           <Button
@@ -183,10 +456,7 @@ const Calculator = () => {
             variant="outline"
             size="lg"
             className="button-base rounded-xl h-14 text-lg"
-            onClick={() => {
-              const result = (parseFloat(display) / 100).toString();
-              setDisplay(result);
-            }}
+            onClick={percentage}
           >
             %
           </Button>
@@ -194,9 +464,9 @@ const Calculator = () => {
             variant="outline"
             size="lg"
             className="button-operator rounded-xl h-14 text-xl font-medium"
-            onClick={() => performOperation('÷')}
+            onClick={() => performOperation('×')}
           >
-            ÷
+            ×
           </Button>
 
           {/* Row 2 */}
@@ -228,9 +498,9 @@ const Calculator = () => {
             variant="outline"
             size="lg"
             className="button-operator rounded-xl h-14 text-xl font-medium"
-            onClick={() => performOperation('×')}
+            onClick={() => performOperation('-')}
           >
-            ×
+            −
           </Button>
 
           {/* Row 3 */}
@@ -262,9 +532,9 @@ const Calculator = () => {
             variant="outline"
             size="lg"
             className="button-operator rounded-xl h-14 text-xl font-medium"
-            onClick={() => performOperation('-')}
+            onClick={() => performOperation('+')}
           >
-            −
+            +
           </Button>
 
           {/* Row 4 */}
@@ -295,10 +565,10 @@ const Calculator = () => {
           <Button
             variant="outline"
             size="lg"
-            className="button-operator rounded-xl h-14 text-xl font-medium"
-            onClick={() => performOperation('+')}
+            className="button-equals rounded-xl h-14 text-xl font-semibold row-span-2"
+            onClick={calculate}
           >
-            +
+            =
           </Button>
 
           {/* Row 5 */}
@@ -318,23 +588,17 @@ const Calculator = () => {
           >
             .
           </Button>
-          <Button
-            variant="outline"
-            size="lg"
-            className="button-equals rounded-xl h-14 text-xl font-semibold"
-            onClick={calculate}
-          >
-            =
-          </Button>
         </div>
 
-        {/* Hint */}
-        <div className="text-center mt-6">
-          <p className="text-xs text-hsl(var(--display-secondary)) opacity-70">
-            Use keyboard shortcuts: numbers, +, -, *, /, Enter, Esc
+        {/* Keyboard shortcuts hint */}
+        <div className="text-center mt-4">
+          <p className="text-xs text-muted-foreground opacity-70">
+            Keyboard shortcuts: 0-9, +, -, *, /, Enter, Esc, %, S (√)
           </p>
         </div>
       </div>
+
+      <CalculatorMemory memory={memory} />
     </div>
   );
 };
