@@ -2,10 +2,11 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Moon, Sun, Copy, History, RotateCcw } from 'lucide-react';
+import { Moon, Sun, Copy, History, RotateCcw, QrCode } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import CalculatorHistory from './CalculatorHistory';
 import CalculatorMemory from './CalculatorMemory';
+import QRGenerator from './QRGenerator';
 
 const Calculator = () => {
   const [display, setDisplay] = useState('0');
@@ -14,6 +15,7 @@ const Calculator = () => {
   const [waitingForNewOperand, setWaitingForNewOperand] = useState(false);
   const [darkMode, setDarkMode] = useState(true);
   const [showHistory, setShowHistory] = useState(false);
+  const [showQRGenerator, setShowQRGenerator] = useState(false);
   const [history, setHistory] = useState<Array<{
     calculation: string;
     result: string;
@@ -389,6 +391,15 @@ const Calculator = () => {
             <Button
               variant="ghost"
               size="icon"
+              onClick={() => setShowQRGenerator(true)}
+              className="h-8 w-8"
+              title="QR Generator"
+            >
+              <QrCode className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
               onClick={clearAll}
               className="h-8 w-8"
             >
@@ -685,6 +696,14 @@ const Calculator = () => {
       </div>
 
       <CalculatorMemory memory={memory} />
+      
+      {/* QR Generator Modal */}
+      {showQRGenerator && (
+        <QRGenerator 
+          onClose={() => setShowQRGenerator(false)}
+          defaultText={display !== '0' ? display : ''}
+        />
+      )}
     </div>
   );
 };
